@@ -4,9 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>Info</title>
   </head>
   <body>
+    <form id="info">
+      <h1 class="title">Information</h1>
+      <div class="wrapper">
+        <label class="description" for="name">Enter your name:</label>
+        <input id="name" type="text" placeholder="Vasya Ivanov" />
+        <div class="name-icon-good">&#10004;</div>
+        <div class="name-icon-bad">&#10008;</div>
+      </div>
+      <div class="wrapper">
+        <label class="description" for="age">Enter your age:</label>
+        <input id="age" type="text" placeholder="34" />
+        <div class="age-icon-good">&#10004;</div>
+        <div class="age-icon-bad">&#10008;</div>
+      </div>
+      <div class="wrapper">
+        <label class="description" for="birthday">Date of birth:</label>
+        <input id="birthday" type="date" />
+      </div>
+      <div class="wrapper">
+        <label class="description" for="education">Education:</label>
+        <select id="education">
+          <option value="1" class="education-item">higher</option>
+          <option value="2" class="education-item">secondary</option>
+          <option value="3" class="education-item">without education</option>
+        </select>
+      </div>
+      <div class="wrapper">
+        <p class="gender-text">Choose your gender:</p>
+        <div class="wrapper-gender">
+          <label class="description" for="male">M:</label>
+          <input id="male" type="radio" name="gender" checked />
+          <label class="description" for="female">W:</label>
+          <input id="female" type="radio" name="gender" />
+        </div>
+      </div>
+      <div class="wrapper-btn">
+        <button id="btn-submit" type="submit">submit</button>
+        <button id="btn-reset" type="reset">reset</button>
+      </div>
+    </form>
+    <div id="modal">
+      <h2 class="title">Information</h2>
+      <ul class="info-list">
+        <li class="info-item">Name:</li>
+        <li class="info-item">Age:</li>
+        <li class="info-item">Birthday:</li>
+        <li class="info-item">Education:</li>
+        <li class="info-item">Gender:</li>
+      </ul>
+      <div id="close">&#10006;</div>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>

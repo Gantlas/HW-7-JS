@@ -2,3 +2,130 @@
   box-sizing: border-box;
   margin: 0;
 }
+
+body {
+  background-color: rgb(236, 235, 235);
+}
+
+#info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  margin: 70px auto 0;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.wrapper-btn {
+  width: 85%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#name,
+#age,
+#birthday,
+#education {
+  width: 50%;
+  padding: 5px;
+}
+
+#btn-submit,
+#btn-reset {
+  padding: 5px;
+  width: 48%;
+  text-transform: uppercase;
+}
+
+.wrong {
+  outline-color: red;
+  border-color: red;
+}
+
+.good {
+  outline-color: green;
+  border-color: green;
+}
+
+.name-icon-good,
+.name-icon-bad,
+.age-icon-good,
+.age-icon-bad {
+  position: absolute;
+  top: 0;
+  right: -20px;
+  font-size: 20px;
+  display: none;
+}
+
+.name-icon-good,
+.age-icon-good {
+  color: green;
+}
+
+.name-icon-bad,
+.age-icon-bad {
+  color: red;
+}
+
+#modal {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid rgb(109, 122, 241);
+  border-radius: 15px;
+  color: rgb(109, 122, 241);
+  position: fixed;
+  z-index: 1;
+  top: 30%;
+  left: 33%;
+  display: none;
+}
+
+.info-list {
+  list-style-type: none;
+}
+
+.info-item {
+  margin-bottom: 10px;
+}
+
+#close {
+  color: rgb(109, 122, 241);
+  position: absolute;
+  font-size: 1.5rem;
+  top: 12px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: gray;
+  opacity: 0.3;
+  transition-duration: 0.3s;
+}
