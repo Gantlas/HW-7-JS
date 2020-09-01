@@ -97,8 +97,9 @@ body {
   color: rgb(109, 122, 241);
   position: fixed;
   z-index: 1;
-  top: 30%;
-  left: 33%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: none;
 }
 

@@ -2,36 +2,35 @@ const info = () => {
   const inputName = document.getElementById("name");
   const goodName = document.querySelector(".name-icon-good");
   const badName = document.querySelector(".name-icon-bad");
+  const inputAge = document.getElementById("age");
+  const goodAge = document.querySelector(".age-icon-good");
+  const badAge = document.querySelector(".age-icon-bad");
+  const closeBtn = document.getElementById("close");
+  const resetBtn = document.getElementById("btn-reset");
+  const form = document.getElementById("info");
+
   inputName.addEventListener("input", () => {
     graficValidation(inputName, goodName, badName);
   });
 
-  const inputAge = document.getElementById("age");
-  const goodAge = document.querySelector(".age-icon-good");
-  const badAge = document.querySelector(".age-icon-bad");
   inputAge.addEventListener("input", () => {
     graficValidation(inputAge, goodAge, badAge);
   });
 
-  const form = document.getElementById("info");
   form.onsubmit = () => {
     if (!validate(inputName) || !validate(inputAge)) {
-      alert("invalid input!!!");
+      graficValidation(inputName, goodName, badName);
+      graficValidation(inputAge, goodAge, badAge);
+      // alert("invalid input!!!");
     } else {
       showModal(getInfo());
     }
     return false;
   };
 
-  const closeBtn = document.getElementById("close");
-  closeBtn.addEventListener("click", () => {
-    hideModal();
-  });
+  closeBtn.addEventListener("click", () => hideModal());
 
-  const resetBtn = document.getElementById("btn-reset");
-  resetBtn.addEventListener("click", () => {
-    resetIcons();
-  });
+  resetBtn.addEventListener("click", () => resetIcons());
 };
 
 const graficValidation = (input, success, error) => {
@@ -64,11 +63,9 @@ const showModal = (arr) => {
   document.getElementById("modal").style.display = "block";
 
   const infoArr = [...document.querySelectorAll(".info-item")];
-  infoArr[0].innerHTML = `Name: ${arr[0]}`;
-  infoArr[1].innerHTML = `Age: ${arr[1]}`;
-  infoArr[2].innerHTML = `Birthday: ${arr[2]}`;
-  infoArr[3].innerHTML = `Education: ${arr[3]}`;
-  infoArr[4].innerHTML = `Gender: ${arr[4]}`;
+  arr.forEach((obj, i) => {
+    infoArr[i].innerHTML = `${obj.title}: ${obj.value}`;
+  });
 };
 
 const hideModal = () => {
@@ -86,34 +83,31 @@ const getInfo = () => {
     .value.split("-")
     .reverse()
     .join(".");
-  let education;
-  switch (document.getElementById("education").value) {
-    case "1":
-      education = "higher";
-      break;
-    case "2":
-      education = "secondary";
-      break;
-    case "3":
-      education = "without education";
-      break;
-  }
+  const education = document.getElementById("education").value;
   const gender = document.getElementById("male").checked ? "male" : "female";
 
-  return [name, age, birthday, education, gender];
+  return [
+    { title: "Name", value: name },
+    { title: "Age", value: age },
+    { title: "Birthday", value: birthday },
+    { title: "Education", value: education },
+    { title: "Gender", value: gender },
+  ];
 };
 
 const resetIcons = () => {
+  const inputName = document.getElementById("name");
+  const inputAge = document.getElementById("age");
+
+  inputName.classList.remove("good");
+  inputName.classList.remove("wrong");
+  inputAge.classList.remove("good");
+  inputAge.classList.remove("wrong");
+
   document.querySelector(".age-icon-good").style.display = "none";
   document.querySelector(".age-icon-bad").style.display = "none";
   document.querySelector(".name-icon-good").style.display = "none";
   document.querySelector(".name-icon-bad").style.display = "none";
-  const inputName = document.getElementById("name");
-  inputName.classList.remove("good");
-  inputName.classList.remove("wrong");
-  const inputAge = document.getElementById("age");
-  inputAge.classList.remove("good");
-  inputAge.classList.remove("wrong");
 };
 
 info();
