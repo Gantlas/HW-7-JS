@@ -3,46 +3,19 @@ const info = () => {
   const goodName = document.querySelector(".name-icon-good");
   const badName = document.querySelector(".name-icon-bad");
   inputName.addEventListener("input", () => {
-    if (validate(inputName.value)) {
-      badName.style.display = "none";
-      goodName.style.display = "block";
-      inputName.classList.add("good");
-    } else {
-      goodName.style.display = "none";
-      badName.style.display = "block";
-      inputName.classList.remove("good");
-      inputName.classList.add("wrong");
-    }
+    graficValidation(inputName, goodName, badName);
   });
 
   const inputAge = document.getElementById("age");
   const goodAge = document.querySelector(".age-icon-good");
   const badAge = document.querySelector(".age-icon-bad");
   inputAge.addEventListener("input", () => {
-    if (validate(inputAge.value, true)) {
-      badAge.style.display = "none";
-      goodAge.style.display = "block";
-      inputAge.classList.add("good");
-    } else {
-      goodAge.style.display = "none";
-      badAge.style.display = "block";
-      inputAge.classList.remove("good");
-      inputAge.classList.add("wrong");
-    }
+    graficValidation(inputAge, goodAge, badAge);
   });
-
-  // const submitBtn = document.getElementById("btn-submit");
-  // submitBtn.addEventListener("click", () => {
-  //   if (!validate(inputName.value) || !validate(inputAge.value, true)) {
-  //     // alert("invalid input!!!");
-  //   } else {
-  //     showModal(getInfo());
-  //   }
-  // });
 
   const form = document.getElementById("info");
   form.onsubmit = () => {
-    if (!validate(inputName.value) || !validate(inputAge.value, true)) {
+    if (!validate(inputName) || !validate(inputAge)) {
       alert("invalid input!!!");
     } else {
       showModal(getInfo());
@@ -61,9 +34,22 @@ const info = () => {
   });
 };
 
-const validate = (data, flag) => {
-  const temp = data === null ? "" : data.trim();
-  if (flag) {
+const graficValidation = (input, success, error) => {
+  if (validate(input)) {
+    error.style.display = "none";
+    success.style.display = "block";
+    input.classList.add("good");
+  } else {
+    success.style.display = "none";
+    error.style.display = "block";
+    input.classList.remove("good");
+    input.classList.add("wrong");
+  }
+};
+
+const validate = (input) => {
+  const temp = input.value === null ? "" : input.value.trim();
+  if (input.id === "age") {
     return isFinite(temp) && !!temp && temp > 0;
   }
   return !!temp && !/[^a-z\s]/gi.test(temp);
@@ -93,11 +79,6 @@ const hideModal = () => {
 };
 
 const getInfo = () => {
-  // const form = document.getElementById("info");
-  // form.onsubmit = () => {
-  //   return false;
-  // };
-
   const name = document.getElementById("name").value;
   const age = document.getElementById("age").value;
   const birthday = document
