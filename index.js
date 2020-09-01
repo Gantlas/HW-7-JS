@@ -31,19 +31,33 @@ const info = () => {
     }
   });
 
+  // const submitBtn = document.getElementById("btn-submit");
+  // submitBtn.addEventListener("click", () => {
+  //   if (!validate(inputName.value) || !validate(inputAge.value, true)) {
+  //     // alert("invalid input!!!");
+  //   } else {
+  //     showModal(getInfo());
+  //   }
+  // });
+
   const form = document.getElementById("info");
   form.onsubmit = () => {
+    if (!validate(inputName.value) || !validate(inputAge.value, true)) {
+      alert("invalid input!!!");
+    } else {
+      showModal(getInfo());
+    }
     return false;
   };
-
-  const submitBtn = document.getElementById("btn-submit");
-  submitBtn.addEventListener("click", () => {
-    showModal();
-  });
 
   const closeBtn = document.getElementById("close");
   closeBtn.addEventListener("click", () => {
     hideModal();
+  });
+
+  const resetBtn = document.getElementById("btn-reset");
+  resetBtn.addEventListener("click", () => {
+    resetIcons();
   });
 };
 
@@ -55,13 +69,20 @@ const validate = (data, flag) => {
   return !!temp && !/[^a-z\s]/gi.test(temp);
 };
 
-const showModal = () => {
+const showModal = (arr) => {
   const div = document.createElement("DIV");
   div.className = "cover";
   document.body.append(div);
   document.body.style.overflowY = "hidden";
 
   document.getElementById("modal").style.display = "block";
+
+  const infoArr = [...document.querySelectorAll(".info-item")];
+  infoArr[0].innerHTML = `Name: ${arr[0]}`;
+  infoArr[1].innerHTML = `Age: ${arr[1]}`;
+  infoArr[2].innerHTML = `Birthday: ${arr[2]}`;
+  infoArr[3].innerHTML = `Education: ${arr[3]}`;
+  infoArr[4].innerHTML = `Gender: ${arr[4]}`;
 };
 
 const hideModal = () => {
@@ -71,8 +92,47 @@ const hideModal = () => {
   document.getElementById("modal").style.display = "none";
 };
 
-info();
+const getInfo = () => {
+  // const form = document.getElementById("info");
+  // form.onsubmit = () => {
+  //   return false;
+  // };
 
-// 1. Сделать функцию для показа модалки +
-// 2. Добавить событие на сабмит
-// 3. событие на ресет
+  const name = document.getElementById("name").value;
+  const age = document.getElementById("age").value;
+  const birthday = document
+    .getElementById("birthday")
+    .value.split("-")
+    .reverse()
+    .join(".");
+  let education;
+  switch (document.getElementById("education").value) {
+    case "1":
+      education = "higher";
+      break;
+    case "2":
+      education = "secondary";
+      break;
+    case "3":
+      education = "without education";
+      break;
+  }
+  const gender = document.getElementById("male").checked ? "male" : "female";
+
+  return [name, age, birthday, education, gender];
+};
+
+const resetIcons = () => {
+  document.querySelector(".age-icon-good").style.display = "none";
+  document.querySelector(".age-icon-bad").style.display = "none";
+  document.querySelector(".name-icon-good").style.display = "none";
+  document.querySelector(".name-icon-bad").style.display = "none";
+  const inputName = document.getElementById("name");
+  inputName.classList.remove("good");
+  inputName.classList.remove("wrong");
+  const inputAge = document.getElementById("age");
+  inputAge.classList.remove("good");
+  inputAge.classList.remove("wrong");
+};
+
+info();
