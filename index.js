@@ -21,7 +21,8 @@ const info = () => {
     if (!validate(inputName) || !validate(inputAge)) {
       graficValidation(inputName, goodName, badName);
       graficValidation(inputAge, goodAge, badAge);
-      // alert("invalid input!!!");
+      shakeInvalidInput(inputName);
+      shakeInvalidInput(inputAge);
     } else {
       showModal(getInfo());
     }
@@ -93,6 +94,15 @@ const getInfo = () => {
     { title: "Education", value: education },
     { title: "Gender", value: gender },
   ];
+};
+
+const shakeInvalidInput = (input) => {
+  if (!validate(input)) {
+    input.classList.add("shake-horizontal", "shake-constant");
+    setTimeout(() => {
+      input.classList.remove("shake-horizontal", "shake-constant");
+    }, 150);
+  }
 };
 
 const resetIcons = () => {
