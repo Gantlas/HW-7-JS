@@ -2,68 +2,54 @@ const info = () => {
   const inputName = document.getElementById("name");
   const goodName = document.querySelector(".name-icon-good");
   const badName = document.querySelector(".name-icon-bad");
-  inputName.addEventListener("input", () => {
-    if (validate(inputName.value)) {
-      badName.style.display = "none";
-      goodName.style.display = "block";
-      inputName.classList.add("good");
-    } else {
-      goodName.style.display = "none";
-      badName.style.display = "block";
-      inputName.classList.remove("good");
-      inputName.classList.add("wrong");
-    }
-  });
-
   const inputAge = document.getElementById("age");
   const goodAge = document.querySelector(".age-icon-good");
   const badAge = document.querySelector(".age-icon-bad");
-  inputAge.addEventListener("input", () => {
-    if (validate(inputAge.value, true)) {
-      badAge.style.display = "none";
-      goodAge.style.display = "block";
-      inputAge.classList.add("good");
-    } else {
-      goodAge.style.display = "none";
-      badAge.style.display = "block";
-      inputAge.classList.remove("good");
-      inputAge.classList.add("wrong");
-    }
+  const closeBtn = document.getElementById("close");
+  const resetBtn = document.getElementById("btn-reset");
+  const form = document.getElementById("info");
+
+  inputName.addEventListener("input", () => {
+    graficValidation(inputName, goodName, badName);
   });
 
-  // const submitBtn = document.getElementById("btn-submit");
-  // submitBtn.addEventListener("click", () => {
-  //   if (!validate(inputName.value) || !validate(inputAge.value, true)) {
-  //     // alert("invalid input!!!");
-  //   } else {
-  //     showModal(getInfo());
-  //   }
-  // });
+  inputAge.addEventListener("input", () => {
+    graficValidation(inputAge, goodAge, badAge);
+  });
 
-  const form = document.getElementById("info");
   form.onsubmit = () => {
-    if (!validate(inputName.value) || !validate(inputAge.value, true)) {
-      alert("invalid input!!!");
+    if (!validate(inputName) || !validate(inputAge)) {
+      graficValidation(inputName, goodName, badName);
+      graficValidation(inputAge, goodAge, badAge);
+      shakeInvalidInput(inputName);
+      shakeInvalidInput(inputAge);
     } else {
       showModal(getInfo());
     }
     return false;
   };
 
-  const closeBtn = document.getElementById("close");
-  closeBtn.addEventListener("click", () => {
-    hideModal();
-  });
+  closeBtn.addEventListener("click", () => hideModal());
 
-  const resetBtn = document.getElementById("btn-reset");
-  resetBtn.addEventListener("click", () => {
-    resetIcons();
-  });
+  resetBtn.addEventListener("click", () => resetIcons());
 };
 
-const validate = (data, flag) => {
-  const temp = data === null ? "" : data.trim();
-  if (flag) {
+const graficValidation = (input, success, error) => {
+  if (validate(input)) {
+    error.style.display = "none";
+    success.style.display = "block";
+    input.classList.add("good");
+  } else {
+    success.style.display = "none";
+    error.style.display = "block";
+    input.classList.remove("good");
+    input.classList.add("wrong");
+  }
+};
+
+const validate = (input) => {
+  const temp = input.value === null ? "" : input.value.trim();
+  if (input.id === "age") {
     return isFinite(temp) && !!temp && temp > 0;
   }
   return !!temp && !/[^a-z\s]/gi.test(temp);
@@ -78,11 +64,9 @@ const showModal = (arr) => {
   document.getElementById("modal").style.display = "block";
 
   const infoArr = [...document.querySelectorAll(".info-item")];
-  infoArr[0].innerHTML = `Name: ${arr[0]}`;
-  infoArr[1].innerHTML = `Age: ${arr[1]}`;
-  infoArr[2].innerHTML = `Birthday: ${arr[2]}`;
-  infoArr[3].innerHTML = `Education: ${arr[3]}`;
-  infoArr[4].innerHTML = `Gender: ${arr[4]}`;
+  arr.forEach((obj, i) => {
+    infoArr[i].innerHTML = `${obj.title}: ${obj.value}`;
+  });
 };
 
 const hideModal = () => {
@@ -93,11 +77,6 @@ const hideModal = () => {
 };
 
 const getInfo = () => {
-  // const form = document.getElementById("info");
-  // form.onsubmit = () => {
-  //   return false;
-  // };
-
   const name = document.getElementById("name").value;
   const age = document.getElementById("age").value;
   const birthday = document
@@ -105,34 +84,40 @@ const getInfo = () => {
     .value.split("-")
     .reverse()
     .join(".");
-  let education;
-  switch (document.getElementById("education").value) {
-    case "1":
-      education = "higher";
-      break;
-    case "2":
-      education = "secondary";
-      break;
-    case "3":
-      education = "without education";
-      break;
-  }
+  const education = document.getElementById("education").value;
   const gender = document.getElementById("male").checked ? "male" : "female";
 
-  return [name, age, birthday, education, gender];
+  return [
+    { title: "Name", value: name },
+    { title: "Age", value: age },
+    { title: "Birthday", value: birthday },
+    { title: "Education", value: education },
+    { title: "Gender", value: gender },
+  ];
+};
+
+const shakeInvalidInput = (input) => {
+  if (!validate(input)) {
+    input.classList.add("shake-horizontal", "shake-constant");
+    setTimeout(() => {
+      input.classList.remove("shake-horizontal", "shake-constant");
+    }, 150);
+  }
 };
 
 const resetIcons = () => {
+  const inputName = document.getElementById("name");
+  const inputAge = document.getElementById("age");
+
+  inputName.classList.remove("good");
+  inputName.classList.remove("wrong");
+  inputAge.classList.remove("good");
+  inputAge.classList.remove("wrong");
+
   document.querySelector(".age-icon-good").style.display = "none";
   document.querySelector(".age-icon-bad").style.display = "none";
   document.querySelector(".name-icon-good").style.display = "none";
   document.querySelector(".name-icon-bad").style.display = "none";
-  const inputName = document.getElementById("name");
-  inputName.classList.remove("good");
-  inputName.classList.remove("wrong");
-  const inputAge = document.getElementById("age");
-  inputAge.classList.remove("good");
-  inputAge.classList.remove("wrong");
 };
 
 info();
