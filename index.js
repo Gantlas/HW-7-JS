@@ -8,6 +8,7 @@ const info = () => {
   const closeBtn = document.getElementById("close");
   const resetBtn = document.getElementById("btn-reset");
   const form = document.getElementById("info");
+  const inputList = document.querySelectorAll(".inp-item");
 
   inputName.addEventListener("input", () => {
     graficValidation(inputName, goodName, badName);
@@ -24,7 +25,7 @@ const info = () => {
       shakeInvalidInput(inputName);
       shakeInvalidInput(inputAge);
     } else {
-      showModal(getInfo());
+      showModal(getInfo(inputList));
     }
     return false;
   };
@@ -63,9 +64,11 @@ const showModal = (arr) => {
 
   document.getElementById("modal").style.display = "block";
 
-  const infoArr = [...document.querySelectorAll(".info-item")];
-  arr.forEach((obj, i) => {
-    infoArr[i].innerHTML = `${obj.title}: ${obj.value}`;
+  arr.forEach((obj) => {
+    const li = document.createElement("LI");
+    li.classList.add("info-item");
+    li.innerHTML = `${obj.title}: ${obj.value}`;
+    document.querySelector(".info-list").append(li);
   });
 };
 
@@ -74,26 +77,26 @@ const hideModal = () => {
   document.body.style.overflowY = "auto";
 
   document.getElementById("modal").style.display = "none";
+
+  const infoItem = document.querySelectorAll(".info-item");
+  for (let el of infoItem) {
+    el.remove();
+  }
 };
 
-const getInfo = () => {
-  const name = document.getElementById("name").value;
-  const age = document.getElementById("age").value;
-  const birthday = document
-    .getElementById("birthday")
-    .value.split("-")
-    .reverse()
-    .join(".");
-  const education = document.getElementById("education").value;
-  const gender = document.getElementById("male").checked ? "male" : "female";
+const getInfo = (inputList) => {
+  let res = [];
 
-  return [
-    { title: "Name", value: name },
-    { title: "Age", value: age },
-    { title: "Birthday", value: birthday },
-    { title: "Education", value: education },
-    { title: "Gender", value: gender },
-  ];
+  for (let el of [...inputList]) {
+    if (el.type === "radio" && el.checked) {
+      res.push({ title: el.name, value: el.id });
+    } else if (el.type === "radio") {
+      continue;
+    } else {
+      res.push({ title: el.id, value: el.value });
+    }
+  }
+  return res;
 };
 
 const shakeInvalidInput = (input) => {
