@@ -63,9 +63,9 @@ const showModal = (arr) => {
 
   document.getElementById("modal").style.display = "block";
 
-  const infoArr = [...document.querySelectorAll(".info-item")];
-  arr.forEach((obj, i) => {
-    infoArr[i].innerHTML = `${obj.title}: ${obj.value}`;
+  const infoList = document.querySelector(".info-list");
+  arr.forEach((obj) => {
+    infoList.innerHTML += `<li class="info-item">${obj.title}: ${obj.value}</li>`;
   });
 };
 
@@ -74,26 +74,34 @@ const hideModal = () => {
   document.body.style.overflowY = "auto";
 
   document.getElementById("modal").style.display = "none";
+
+  const infoItem = [...document.querySelectorAll(".info-item")];
+  infoItem.map((el) => el.remove());
 };
 
 const getInfo = () => {
-  const name = document.getElementById("name").value;
-  const age = document.getElementById("age").value;
-  const birthday = document
-    .getElementById("birthday")
-    .value.split("-")
-    .reverse()
-    .join(".");
-  const education = document.getElementById("education").value;
-  const gender = document.getElementById("male").checked ? "male" : "female";
-
-  return [
-    { title: "Name", value: name },
-    { title: "Age", value: age },
-    { title: "Birthday", value: birthday },
-    { title: "Education", value: education },
-    { title: "Gender", value: gender },
+  const inputList = [
+    ...document.querySelectorAll(".inp-item, input[name=gender]:checked"),
   ];
+  let res = [];
+
+  inputList.forEach((el) => {
+    switch (el.type) {
+      case "radio":
+        res.push({ title: el.name, value: el.id });
+        break;
+      case "date":
+        res.push({
+          title: el.id,
+          value: el.value.split("-").reverse().join("."),
+        });
+        break;
+      default:
+        res.push({ title: el.id, value: el.value });
+    }
+  });
+
+  return res;
 };
 
 const shakeInvalidInput = (input) => {
