@@ -78,25 +78,36 @@ const hideModal = () => {
 
   document.getElementById("modal").style.display = "none";
 
-  const infoItem = document.querySelectorAll(".info-item");
-  for (let el of infoItem) {
-    el.remove();
-  }
+  const infoItem = [...document.querySelectorAll(".info-item")];
+  infoItem.map((el) => el.remove());
 };
 
 const getInfo = (inputList) => {
   let res = [];
 
-  for (let el of [...inputList]) {
+  [...inputList].forEach((el) => {
     if (el.type === "radio" && el.checked) {
       res.push({ title: el.name, value: el.id });
     } else if (el.type === "radio") {
-      continue;
+      return;
     } else {
       res.push({ title: el.id, value: el.value });
     }
-  }
+  });
+
   return res;
+  // let res = [];
+
+  // for (let el of [...inputList]) {
+  //   if (el.type === "radio" && el.checked) {
+  //     res.push({ title: el.name, value: el.id });
+  //   } else if (el.type === "radio") {
+  //     continue;
+  //   } else {
+  //     res.push({ title: el.id, value: el.value });
+  //   }
+  // }
+  // return res;
 };
 
 const shakeInvalidInput = (input) => {
